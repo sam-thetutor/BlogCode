@@ -157,7 +157,7 @@ actor BLOGWEBSITE {
 
   //add a comment
 
-  public shared ({ caller }) func add_comment(_comment : Text, _postID : Text) : async Result.Result<(), Text> {
+  public shared ({ caller }) func add_comment(_postID : Text,_comment : Text) : async Result.Result<(), Text> {
 
     switch (postStore.get(_postID)) {
       case (null) { return #err("no post found") };
@@ -235,7 +235,7 @@ actor BLOGWEBSITE {
 
                   var tempList = List.filter<Types.Comment>(comments, func hack { hack.commentId != _commentID });
                   tempList := List.push(tempData, comments);
-                  ignore postStore.replace(_postID, {post with comments=comments});
+                  ignore postStore.replace(_postID, {post with comments=tempList});
            };
           case(null) { return #err("no comment with that id found")};
         };
